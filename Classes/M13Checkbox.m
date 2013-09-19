@@ -153,6 +153,8 @@
 - (id)init
 {
     self = [self initWithFrame:CGRectMake(0, 0, M13CheckboxDefaultHeight, M13CheckboxDefaultHeight)];
+    checkedValue = @"Y";
+    uncheckedValue = @"N";
     return self;
 }
 
@@ -171,13 +173,13 @@
         _checkAlignment = M13CheckboxAlignmentRight;
         _checkState = M13CheckboxStateUnchecked;
         _enabled = YES;
-        checkView = [[CheckView alloc] initWithFrame:CGRectMake(self.frame.size.width - ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height)];
+        checkView = [[CheckView alloc] initWithFrame:CGRectMake(0, 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height)];
         checkView.checkbox = self;
         checkView.selected = NO;
         checkView.backgroundColor = [UIColor clearColor];
         checkView.clipsToBounds = NO;
         checkView.userInteractionEnabled = NO;
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize)];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kBoxSize + 20, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize)];
         _titleLabel.textColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
         _titleLabel.font = [UIFont boldSystemFontOfSize:16];
         _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -207,13 +209,13 @@
         _checkAlignment = M13CheckboxAlignmentRight;
         _checkState = M13CheckboxStateUnchecked;
         _enabled = YES;
-        checkView = [[CheckView alloc] initWithFrame:CGRectMake(self.frame.size.width - ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height)];
+        checkView = [[CheckView alloc] initWithFrame:CGRectMake(0, 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height)];
         checkView.checkbox = self;
         checkView.selected = NO;
         checkView.backgroundColor = [UIColor clearColor];
         checkView.clipsToBounds = NO;
         checkView.userInteractionEnabled = NO;
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize)];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kBoxSize + 20, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize)];
         _titleLabel.textColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
         _titleLabel.font = [UIFont boldSystemFontOfSize:16];
         _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -305,11 +307,11 @@
 - (void)layoutSubviews
 {
     if (_checkAlignment == M13CheckboxAlignmentRight) {
-        checkView.frame = CGRectMake(self.frame.size.width - ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height);
-        _titleLabel.frame = CGRectMake(0, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize);
+        checkView.frame = CGRectMake(0, 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height);
+        _titleLabel.frame = CGRectMake(kBoxSize + 40, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize);
     } else {
         checkView.frame = CGRectMake(0, 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height);
-        _titleLabel.frame = CGRectMake(checkView.frame.size.width + (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - (self.frame.size.height * (kBoxSize + kCheckHorizontalExtention + kCheckBoxSpacing)), self.frame.size.height * kBoxSize);
+        _titleLabel.frame = CGRectMake(kBoxSize + 40, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - (self.frame.size.height * (kBoxSize + kCheckHorizontalExtention + kCheckBoxSpacing)), self.frame.size.height * kBoxSize);
     }
 }
 
