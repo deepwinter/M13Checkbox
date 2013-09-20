@@ -37,15 +37,15 @@ typedef enum {
 
 @interface M13Checkbox : UIControl
 
-@property (nonatomic, retain) UILabel *titleLabel; //Label will fill available frame - box size.
-@property (nonatomic, assign) M13CheckboxState checkState;
-@property (nonatomic, assign) M13CheckboxAlignment checkAlignment UI_APPEARANCE_SELECTOR; //Set the box to the left or right of the text
+@property (nonatomic, strong) UILabel *titleLabel; //Label will fill available frame - box size.
+@property (nonatomic) M13CheckboxState checkState;
+@property (nonatomic) M13CheckboxAlignment checkAlignment UI_APPEARANCE_SELECTOR; //Set the box to the left or right of the text
 @property (nonatomic, readonly) CGRect boxFrame; //Location of checkbox in control
 
 //Values, the values returned by using the - (id)value method, this is a convenience method if you have a group of boxes on a page. That way one does not have to do if(box == mybox) {if( mybox.checkState == ... for every checkbox
-@property (nonatomic, retain) id checkedValue;
-@property (nonatomic, retain) id uncheckedValue;
-@property (nonatomic, retain) id mixedValue;
+@property (nonatomic, strong) id checkedValue;
+@property (nonatomic, strong) id uncheckedValue;
+@property (nonatomic, strong) id mixedValue;
 - (id)value;
 
 - (id)init; // create with default height
@@ -64,12 +64,12 @@ typedef enum {
 - (UIBezierPath *)getDefaultShape;//One needs to subclass M13Checkbox and override this method to use a custom shape. see method for more details.
 
 //Appearance
-@property (nonatomic, assign) BOOL flat UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) CGFloat strokeWidth UI_APPEARANCE_SELECTOR; 
-@property (nonatomic, retain) UIColor *strokeColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic, retain) UIColor *checkColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic, retain) UIColor *tintColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic, retain) UIColor *uncheckedColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) CGFloat radius UI_APPEARANCE_SELECTOR; 
+@property (nonatomic) BOOL flat UI_APPEARANCE_SELECTOR;
+@property (nonatomic) CGFloat strokeWidth UI_APPEARANCE_SELECTOR; 
+@property (nonatomic, strong) UIColor *strokeColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *checkColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *tintColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *uncheckedColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) CGFloat radius UI_APPEARANCE_SELECTOR; 
 
 @end

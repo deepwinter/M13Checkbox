@@ -25,8 +25,8 @@
 //Custom Checkbox View
 @interface CheckView : UIView
 
-@property (nonatomic, retain) M13Checkbox *checkbox;
-@property (nonatomic, assign) BOOL selected;
+@property (nonatomic, strong) M13Checkbox *checkbox;
+@property (nonatomic) BOOL selected;
 
 @end
 
@@ -153,8 +153,8 @@
 - (id)init
 {
     self = [self initWithFrame:CGRectMake(0, 0, M13CheckboxDefaultHeight, M13CheckboxDefaultHeight)];
-    checkedValue = @"Y";
-    uncheckedValue = @"N";
+    self.checkedValue = @"Y";
+    self.uncheckedValue = @"N";
     return self;
 }
 
@@ -370,13 +370,15 @@
 
 - (id)value
 {
+    id rval;
     if (self.checkState == M13CheckboxStateUnchecked) {
-        return uncheckedValue;
+        rval = @"N"; //self.uncheckedValue;
     } else if (self.checkState == M13CheckboxStateChecked) {
-        return checkedValue;
+        rval = @"Y"; // self.checkedValue;
     } else {
-        return mixedValue;
+        rval = self.mixedValue;
     }
+    return rval;
 }
 
 #pragma mark - UIControl overrides
