@@ -35,7 +35,18 @@ typedef enum {
     M13CheckboxAlignmentRight //Default
 } M13CheckboxAlignment;
 
+@class M13Checkbox;
+
+@protocol M13CheckboxDelegate <NSObject>
+
+@optional
+- (void) checkboxWasClicked: (M13Checkbox *) checkbox;
+
+@end
+
 @interface M13Checkbox : UIControl
+
+@property (nonatomic, weak) id<M13CheckboxDelegate> delegate;
 
 @property (nonatomic, strong) UILabel *titleLabel; //Label will fill available frame - box size.
 @property (nonatomic) M13CheckboxState checkState;

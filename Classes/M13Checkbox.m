@@ -149,6 +149,8 @@
 @synthesize checkedValue;
 @synthesize uncheckedValue;
 @synthesize mixedValue;
+@synthesize delegate;
+
 
 - (id)init
 {
@@ -334,6 +336,9 @@
 {
 
     self.checkState = !self.checkState;
+    if(self.delegate != nil){
+        [delegate checkboxWasClicked:self];
+    }
 }
 
 - (void)setEnabled:(BOOL)enabled
