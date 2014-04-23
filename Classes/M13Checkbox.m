@@ -125,11 +125,13 @@
             [mixedPath fill];
         }
     } else {
-        _imageView = [[UIImageView alloc] initWithImage:checkbox.image];
-        if (checkbox.checkState == M13CheckboxStateUnchecked) {
+        if(_imageView == nil){
+            _imageView = [[UIImageView alloc] initWithImage:checkbox.image];
+        }
+        if (checkbox.checkState == M13CheckboxStateChecked) {
             [_imageView setAlpha:1.0];
-        } else if (checkbox.checkState == M13CheckboxStateChecked) {
-            [_imageView setAlpha:0.5];
+        } else if (checkbox.checkState == M13CheckboxStateUnchecked) {
+            [_imageView setAlpha:0.2f];
         }
         [checkbox addSubview: _imageView];
 
@@ -375,6 +377,14 @@
     if(self.delegate != nil){
         [delegate checkboxWasClicked:self];
     }
+    
+    /*
+    if (self.checkState == M13CheckboxStateChecked) {
+        [checkView.imageView setAlpha:1.0];
+    } else if (self.checkState == M13CheckboxStateUnchecked) {
+        [checkView.imageView setAlpha:0.2f];
+    }
+     */
 }
 
 - (void)setEnabled:(BOOL)enabled
