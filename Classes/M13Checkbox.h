@@ -57,6 +57,9 @@ typedef enum {
 @property (nonatomic, strong) id checkedValue;
 @property (nonatomic, strong) id uncheckedValue;
 @property (nonatomic, strong) id mixedValue;
+
+@property (nonatomic, strong) UIImage * image;
+
 - (id)value;
 
 - (id)init; // create with default height

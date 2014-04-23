@@ -22,11 +22,15 @@
 #define kCheckBoxSpacing 0.3125
 #define kM13CheckboxMaxFontSize 100.0
 
+
+
+
 //Custom Checkbox View
 @interface CheckView : UIView
 
 @property (nonatomic, strong) M13Checkbox *checkbox;
 @property (nonatomic) BOOL selected;
+@property (nonatomic, strong) UIImageView * imageView;
 
 @end
 
@@ -72,47 +76,63 @@
     }
     
     //Draw box
-    if (checkbox.flat) {
-        UIBezierPath *boxPath = [UIBezierPath bezierPathWithRoundedRect:boxRect cornerRadius:checkbox.radius];
-        [fillColor setFill];
-        [boxPath fill];
-        [strokeColor setStroke];
-        boxPath.lineWidth = checkbox.strokeWidth;
-        [boxPath stroke];
-    } else {
-        //Create colors based off of tint color
-        float r, g, b, a;
-        [fillColor getRed:&r green:&g blue:&b alpha:&a];
-        UIColor *topColor = [UIColor colorWithRed:(r + 0.20) green:(g + 0.20) blue:(b + 0.20) alpha:a];
-        UIColor *bottomColor = [UIColor colorWithRed:(r + 0.15) green:(g + 0.15) blue:(b + 0.15) alpha:a];
-        NSArray *fillGradientColors = [NSArray arrayWithObjects:(id)topColor.CGColor, (id)topColor.CGColor, (id)fillColor.CGColor, (id)bottomColor.CGColor, nil];
-        CGFloat fillGradientLocations[] = {0, 0.47, 0.53, 1};
-        CGGradientRef fillGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)fillGradientColors, fillGradientLocations);
+    if(checkbox.image == nil){
         
-        //Draw
-        UIBezierPath *boxPath = [UIBezierPath bezierPathWithRoundedRect:boxRect cornerRadius:checkbox.radius];
-        CGContextSaveGState(context);
-        [boxPath addClip];
-        CGContextDrawLinearGradient(context, fillGradient, CGPointMake(0, (self.frame.size.height * kCheckVerticalExtension)), CGPointMake(0, self.frame.size.height), 0);
-        CGContextRestoreGState(context);
-        [strokeColor setStroke];
-        boxPath.lineWidth = checkbox.strokeWidth;
-        [boxPath stroke];
+        if (checkbox.flat) {
+            UIBezierPath *boxPath = [UIBezierPath bezierPathWithRoundedRect:boxRect cornerRadius:checkbox.radius];
+            [fillColor setFill];
+            [boxPath fill];
+            [strokeColor setStroke];
+            boxPath.lineWidth = checkbox.strokeWidth;
+            [boxPath stroke];
+        } else {
+            //Create colors based off of tint color
+            float r, g, b, a;
+            [fillColor getRed:&r green:&g blue:&b alpha:&a];
+            UIColor *topColor = [UIColor colorWithRed:(r + 0.20) green:(g + 0.20) blue:(b + 0.20) alpha:a];
+            UIColor *bottomColor = [UIColor colorWithRed:(r + 0.15) green:(g + 0.15) blue:(b + 0.15) alpha:a];
+            NSArray *fillGradientColors = [NSArray arrayWithObjects:(id)topColor.CGColor, (id)topColor.CGColor, (id)fillColor.CGColor, (id)bottomColor.CGColor, nil];
+            CGFloat fillGradientLocations[] = {0, 0.47, 0.53, 1};
+            CGGradientRef fillGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)fillGradientColors, fillGradientLocations);
+            
+            //Draw
+            UIBezierPath *boxPath = [UIBezierPath bezierPathWithRoundedRect:boxRect cornerRadius:checkbox.radius];
+            CGContextSaveGState(context);
+            [boxPath addClip];
+            CGContextDrawLinearGradient(context, fillGradient, CGPointMake(0, (self.frame.size.height * kCheckVerticalExtension)), CGPointMake(0, self.frame.size.height), 0);
+            CGContextRestoreGState(context);
+            [strokeColor setStroke];
+            boxPath.lineWidth = checkbox.strokeWidth;
+            [boxPath stroke];
+            
+            //Cleanup
+            CGGradientRelease(fillGradient);
+        }
         
-        //Cleanup
-        CGGradientRelease(fillGradient);
     }
     
-    //Draw Shape
-    if (checkbox.checkState == M13CheckboxStateUnchecked) {
-        //Do Nothing
-    } else if (checkbox.checkState == M13CheckboxStateChecked) {
-        [checkColor setFill];
-        [[checkbox getDefaultShape] fill];
-    } else if (checkbox.checkState == M13CheckboxStateMixed) {
-        UIBezierPath *mixedPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(checkbox.strokeWidth + ((boxRect.size.width - (.5 * self.frame.size.height)) * 0.5), (self.frame.size.height * .5) - ((0.09375 * self.frame.size.height) * .5), .5 * self.frame.size.height, 0.1875 * self.frame.size.height) cornerRadius:(0.09375 * self.frame.size.height)];
-        [checkColor setFill];
-        [mixedPath fill];
+    
+    if(checkbox.image == nil){
+        //Draw Shape
+        if (checkbox.checkState == M13CheckboxStateUnchecked) {
+            //Do Nothing
+        } else if (checkbox.checkState == M13CheckboxStateChecked) {
+            [checkColor setFill];
+            [[checkbox getDefaultShape] fill];
+        } else if (checkbox.checkState == M13CheckboxStateMixed) {
+            UIBezierPath *mixedPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(checkbox.strokeWidth + ((boxRect.size.width - (.5 * self.frame.size.height)) * 0.5), (self.frame.size.height * .5) - ((0.09375 * self.frame.size.height) * .5), .5 * self.frame.size.height, 0.1875 * self.frame.size.height) cornerRadius:(0.09375 * self.frame.size.height)];
+            [checkColor setFill];
+            [mixedPath fill];
+        }
+    } else {
+        _imageView = [[UIImageView alloc] initWithImage:checkbox.image];
+        if (checkbox.checkState == M13CheckboxStateUnchecked) {
+            [_imageView setAlpha:1.0];
+        } else if (checkbox.checkState == M13CheckboxStateChecked) {
+            [_imageView setAlpha:0.5];
+        }
+        [checkbox addSubview: _imageView];
+
     }
     
     //Cleanup
@@ -150,6 +170,7 @@
 @synthesize uncheckedValue;
 @synthesize mixedValue;
 @synthesize delegate;
+@synthesize image;
 
 
 - (id)init
@@ -284,6 +305,9 @@
 - (void)autoFitFontToHeight
 {
     CGFloat height = self.frame.size.height * kBoxSize;
+    if(image != nil){
+        height = 30 * kBoxSize;
+    }
     CGFloat fontSize = kM13CheckboxMaxFontSize;
     CGFloat tempHeight = MAXFLOAT;
     
@@ -310,11 +334,23 @@
 {
     if (_checkAlignment == M13CheckboxAlignmentRight) {
         checkView.frame = CGRectMake(0, 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height);
-        _titleLabel.frame = CGRectMake(kBoxSize + 40, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize);
+        
+        if(image == nil){
+            _titleLabel.frame = CGRectMake(40, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize);
+        } else {
+            _titleLabel.frame = CGRectMake(0, self.frame.size.height * kCheckVerticalExtension + image.size.height, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), 30);
+        }
     } else {
         checkView.frame = CGRectMake(0, 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height);
-        _titleLabel.frame = CGRectMake(kBoxSize + 40, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - (self.frame.size.height * (kBoxSize + kCheckHorizontalExtention + kCheckBoxSpacing)), self.frame.size.height * kBoxSize);
+        
+        if(image == nil){
+            _titleLabel.frame = CGRectMake(40, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - (self.frame.size.height * (kBoxSize + kCheckHorizontalExtention + kCheckBoxSpacing)), self.frame.size.height * kBoxSize);
+        } else {
+            _titleLabel.frame = CGRectMake(0, self.frame.size.height * kCheckVerticalExtension + image.size.height, self.frame.size.width - (self.frame.size.height * (kBoxSize + kCheckHorizontalExtention + kCheckBoxSpacing)), 30);
+        }
     }
+    //checkView.imageView.backgroundColor = [UIColor greenColor];
+    //_titleLabel.backgroundColor = [UIColor redColor];
 }
 
 - (void)setState:(M13CheckboxState)state __attribute((deprecated("use setCheckState method")))
@@ -334,7 +370,7 @@
 
 - (void)toggleCheckState
 {
-
+    
     self.checkState = !self.checkState;
     if(self.delegate != nil){
         [delegate checkboxWasClicked:self];
@@ -372,6 +408,7 @@
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, labelSize.width + (self.frame.size.height * kCheckBoxSpacing) + ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height);
     [self layoutSubviews];
 }
+
 
 - (id)value
 {
