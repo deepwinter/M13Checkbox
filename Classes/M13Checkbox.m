@@ -338,24 +338,22 @@
         checkView.frame = CGRectMake(0, 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height);
         
         if(image == nil){
-            _titleLabel.frame = CGRectMake(40, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize);
+            CGRect frame = CGRectMake(40, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), self.frame.size.height * kBoxSize);
+            _titleLabel.frame = frame;
         } else {
             _titleLabel.hidden = TRUE;
-            //_titleLabel.frame = CGRectMake(0, self.frame.size.height * kCheckVerticalExtension + image.size.height, self.frame.size.width - checkView.frame.size.width - (self.frame.size.height * kCheckBoxSpacing), 30);
-        }
+         }
     } else {
         checkView.frame = CGRectMake(0, 0, ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height);
         
         if(image == nil){
-            _titleLabel.frame = CGRectMake(40, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - (self.frame.size.height * (kBoxSize + kCheckHorizontalExtention + kCheckBoxSpacing)), self.frame.size.height * kBoxSize);
+            CGRect frame = CGRectMake(40, self.frame.size.height * kCheckVerticalExtension, self.frame.size.width - (self.frame.size.height * (kBoxSize + kCheckHorizontalExtention + kCheckBoxSpacing)), self.frame.size.height * kBoxSize);
+            _titleLabel.frame = frame;
         } else {
             _titleLabel.hidden = TRUE;
-            //_titleLabel.frame = CGRectMake(0, self.frame.size.height * kCheckVerticalExtension + image.size.height, self.frame.size.width - (self.frame.size.height * (kBoxSize + kCheckHorizontalExtention + kCheckBoxSpacing)), 30);
         }
     }
-    //checkView.imageView.backgroundColor = [UIColor greenColor];
-    //_titleLabel.backgroundColor = [UIColor redColor];
-}
+   }
 
 - (void)setState:(M13CheckboxState)state __attribute((deprecated("use setCheckState method")))
 {
