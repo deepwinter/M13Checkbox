@@ -414,8 +414,7 @@
 {
     _titleLabel.text = title;
     [self autoFitFontToHeight];
-    CGSize labelSize = [title sizeWithFont:_titleLabel.font];
-    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, labelSize.width + (self.frame.size.height * kCheckBoxSpacing) + ((kBoxSize + kCheckHorizontalExtention) * self.frame.size.height), self.frame.size.height);
+
     [self layoutSubviews];
 }
 
